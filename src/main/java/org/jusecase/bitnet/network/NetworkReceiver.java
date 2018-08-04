@@ -58,7 +58,7 @@ public class NetworkReceiver {
             }
         }
 
-        if (address != null && address instanceof InetSocketAddress) {
+        if (address instanceof InetSocketAddress) {
             InetSocketAddress inetSocketAddress = (InetSocketAddress) address;
 
             packet.limit(packet.position());
