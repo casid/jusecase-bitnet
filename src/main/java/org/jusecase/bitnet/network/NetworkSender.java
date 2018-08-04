@@ -2,6 +2,7 @@ package org.jusecase.bitnet.network;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.SocketException;
 import java.net.StandardProtocolFamily;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
@@ -19,6 +20,10 @@ public class NetworkSender implements AutoCloseable {
     @Override
     public void close() throws IOException {
         channel.disconnect();
+    }
+
+    public void setBroadcast(boolean broadcast) throws IOException {
+        channel.socket().setBroadcast(broadcast);
     }
 
     public void send(InetSocketAddress address, ByteBuffer packet) throws IOException {

@@ -5,7 +5,6 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.StandardProtocolFamily;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousCloseException;
 import java.nio.channels.DatagramChannel;
 
 public class NetworkReceiver {
@@ -65,7 +64,7 @@ public class NetworkReceiver {
             packet.limit(packet.position());
             packet.position(0);
 
-            listener.onPacketReceived(packet, inetSocketAddress.getHostString(), inetSocketAddress.getPort());
+            listener.onPacketReceived(packet, inetSocketAddress);
 
             packet.clear();
         }

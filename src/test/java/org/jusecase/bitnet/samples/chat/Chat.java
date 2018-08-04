@@ -86,7 +86,7 @@ public class Chat implements NetworkReceiverListener {
     }
 
     @Override
-    public void onPacketReceived(ByteBuffer packet, String senderHost, int senderPort) {
+    public void onPacketReceived(ByteBuffer packet, InetSocketAddress address) {
         try {
             BitMessage message = reader.read(packet);
             if (message == null) {
