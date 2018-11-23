@@ -1,6 +1,6 @@
 package org.jusecase.bitnet.message;
 
-import org.jusecase.bitnet.checksum.Crc32MessageChecksum;
+import org.jusecase.bitnet.checksum.Crc32cMessageChecksum;
 import org.jusecase.bitnet.checksum.MessageChecksum;
 import org.jusecase.bitpack.AbstractBitProtocol;
 
@@ -13,7 +13,7 @@ public class BitMessageProtocol extends AbstractBitProtocol {
 
     private final int maxPacketBytes;
     private final int maxPacketsPerMessage;
-    private MessageChecksum messageChecksum = new Crc32MessageChecksum();
+    private MessageChecksum messageChecksum = new Crc32cMessageChecksum();
 
     public BitMessageProtocol() {
         this(1024, 32);

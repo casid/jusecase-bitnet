@@ -3,7 +3,6 @@ package org.jusecase.bitnet.network;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.net.StandardProtocolFamily;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
@@ -71,7 +70,7 @@ public class NetworkReceiver {
     }
 
     private void openChannel() throws IOException {
-        channel = DatagramChannel.open(StandardProtocolFamily.INET6);
+        channel = DatagramChannel.open();
         channel.socket().bind(host);
     }
 

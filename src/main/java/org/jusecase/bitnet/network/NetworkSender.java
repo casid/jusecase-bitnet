@@ -2,8 +2,6 @@ package org.jusecase.bitnet.network;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketException;
-import java.net.StandardProtocolFamily;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.List;
@@ -13,7 +11,7 @@ public class NetworkSender implements AutoCloseable {
     private DatagramChannel channel;
 
     public NetworkSender() throws IOException {
-        channel = DatagramChannel.open(StandardProtocolFamily.INET6);
+        channel = DatagramChannel.open();
         channel.configureBlocking(true);
     }
 
