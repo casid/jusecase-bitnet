@@ -18,7 +18,7 @@
         <dependency>
             <groupId>org.jusecase</groupId>
             <artifactId>bitpack</artifactId>
-            <version>0.0.1</version>
+            <version>1.0.0</version>
         </dependency>
 
         <!-- Tests -->

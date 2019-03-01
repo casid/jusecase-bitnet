@@ -13,12 +13,12 @@ public class ChatMessageSerializer implements BitSerializer<ChatMessage> {
     @Override
     public void serialize(BitWriter writer, ChatMessage object) {
         writer.writeInt8(object.playerId);
-        writer.writeStringNonNull(object.text);
+        writer.writeStringNonNull(8, object.text);
     }
 
     @Override
     public void deserialize(BitReader reader, ChatMessage object) {
         object.playerId = reader.readInt8();
-        object.text = reader.readStringNonNull();
+        object.text = reader.readStringNonNull(8);
     }
 }
