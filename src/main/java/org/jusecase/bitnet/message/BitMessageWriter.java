@@ -3,6 +3,7 @@ package org.jusecase.bitnet.message;
 import org.jusecase.bitnet.checksum.MessageChecksum;
 import org.jusecase.bitpack.buffer.BufferBitWriter;
 
+import java.nio.Buffer;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -58,12 +59,15 @@ public class BitMessageWriter {
             packer.writeObjectNonNull(message);
             packer.flush();
 
-            data.limit(data.position());
-            data.rewind();
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)data).limit(data.position());
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)data).rewind();
             int checksum = messageChecksum.calculateChecksum(data);
 
             data.putInt(0, checksum);
-            data.rewind();
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)data).rewind();
             return data;
         } catch (BufferOverflowException e) {
             throw new InvalidBitMessageException("Maximum message size of " + protocol.getMaxMessageBytes() + " bytes exceeded");
@@ -115,7 +119,8 @@ public class BitMessageWriter {
             packets = new ArrayList<>();
             this.data = data;
             dataBytes = data.limit();
-            data.rewind();
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)data).rewind();
             effectiveBytesForFirstPacket = protocol.getEffectiveBytesForFirstPacket();
             effectiveBytesForAdditionalPacket = protocol.getEffectiveBytesForAdditionalPacket();
             packetCount = calculatePacketCount();
@@ -138,19 +143,24 @@ public class BitMessageWriter {
             packetPart.put((byte) packetNumber);
             if (packetNumber == 0) {
                 packetPart.put((byte) packetCount);
-                data.limit(effectiveBytesForFirstPacket);
+                //noinspection RedundantCast to be able to compile with Java 9+
+                ((Buffer)data).limit(effectiveBytesForFirstPacket);
             } else {
-                data.limit(Math.min(data.position() + effectiveBytesForAdditionalPacket, dataBytes));
+                //noinspection RedundantCast to be able to compile with Java 9+
+                ((Buffer)data).limit(Math.min(data.position() + effectiveBytesForAdditionalPacket, dataBytes));
             }
 
             packetPart.put(data);
-            packetPart.limit(packetPart.position());
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)packetPart).limit(packetPart.position());
 
-            packetPart.rewind();
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)packetPart).rewind();
             int packetChecksum = messageChecksum.calculateChecksum(packetPart);
             packetPart.putInt(0, packetChecksum);
 
-            packetPart.rewind();
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)packetPart).rewind();
         }
     }
 }

@@ -4,6 +4,7 @@ import org.jusecase.bitnet.checksum.MessageChecksum;
 import org.jusecase.bitnet.time.CurrentTimeProvider;
 import org.jusecase.bitpack.buffer.BufferBitReader;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 public class BitMessageReader {
@@ -30,7 +31,8 @@ public class BitMessageReader {
      * @return an {@link BitMessage} in case there is enough data to read the entire message, otherwise null
      */
     public BitMessage read(ByteBuffer packet) throws InvalidBitMessageException {
-        packet.rewind();
+        //noinspection RedundantCast to be able to compile with Java 9+
+        ((Buffer)packet).rewind();
         BufferBitReader unpacker = new BufferBitReader(protocol, packet);
 
         ByteBuffer data = unpacker.getBuffer();
@@ -38,12 +40,14 @@ public class BitMessageReader {
         int receivedChecksum = data.getInt();
         byte messageNumber = data.get();
         data.putInt(0, clientId);
-        data.rewind();
+        //noinspection RedundantCast to be able to compile with Java 9+
+        ((Buffer)data).rewind();
         int calculatedChecksum = messageChecksum.calculateChecksum(data);
         if (calculatedChecksum != receivedChecksum) {
             throw new InvalidBitMessageException("Invalid checksum, expected " + calculatedChecksum + " received " + receivedChecksum);
         }
-        data.position(5);
+        //noinspection RedundantCast to be able to compile with Java 9+
+        ((Buffer)data).position(5);
 
         int messageType = unpacker.readInt8();
         if (messageType == BitMessageProtocol.MULTI_MESSAGE_TYPE) {
@@ -103,7 +107,8 @@ public class BitMessageReader {
                 multiPartDataPackets = packet.get();
             }
 
-            multiPartData.position(protocol.getPacketPosition(packetNumber));
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)multiPartData).position(protocol.getPacketPosition(packetNumber));
             multiPartData.put(packet);
             multiPartDataSize = Math.max(multiPartDataSize, multiPartData.position());
         }
@@ -115,7 +120,8 @@ public class BitMessageReader {
             }
 
             try {
-                multiPartData.limit(multiPartDataSize);
+                //noinspection RedundantCast to be able to compile with Java 9+
+                ((Buffer)multiPartData).limit(multiPartDataSize);
                 return read(multiPartData);
             } finally {
                 releaseData();
@@ -123,7 +129,8 @@ public class BitMessageReader {
         }
 
         private void reset() {
-            multiPartData.clear();
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)multiPartData).clear();
             multiPartDataPackets = 0;
             multiPartDataPacketsReceived = 0;
             multiPartDataSize = 0;

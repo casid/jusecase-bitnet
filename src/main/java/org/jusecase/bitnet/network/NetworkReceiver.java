@@ -3,6 +3,7 @@ package org.jusecase.bitnet.network;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
@@ -60,12 +61,16 @@ public class NetworkReceiver {
         if (address instanceof InetSocketAddress) {
             InetSocketAddress inetSocketAddress = (InetSocketAddress) address;
 
-            packet.limit(packet.position());
-            packet.position(0);
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)packet).limit(packet.position());
+
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)packet).position(0);
 
             listener.onPacketReceived(packet, inetSocketAddress);
 
-            packet.clear();
+            //noinspection RedundantCast to be able to compile with Java 9+
+            ((Buffer)packet).clear();
         }
     }
 

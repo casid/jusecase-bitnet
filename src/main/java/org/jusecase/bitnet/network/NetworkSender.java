@@ -2,6 +2,7 @@ package org.jusecase.bitnet.network;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.List;
@@ -26,7 +27,8 @@ public class NetworkSender implements AutoCloseable {
 
     public void send(InetSocketAddress address, ByteBuffer packet) throws IOException {
         channel.send(packet, address);
-        packet.rewind();
+        //noinspection RedundantCast to be able to compile with Java 9+
+        ((Buffer)packet).rewind();
     }
 
     public void send(InetSocketAddress address, List<ByteBuffer> packets) throws IOException {
