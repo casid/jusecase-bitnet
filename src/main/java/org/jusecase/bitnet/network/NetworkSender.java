@@ -9,7 +9,7 @@ import java.util.List;
 
 public class NetworkSender implements AutoCloseable {
 
-    private DatagramChannel channel;
+    private final DatagramChannel channel;
 
     public NetworkSender() throws IOException {
         channel = DatagramChannel.open();
